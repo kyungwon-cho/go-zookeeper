@@ -201,6 +201,9 @@ func Connect(servers []string, sessionTimeout time.Duration, options ...connOpti
 
 	conn.setTimeouts(int32(sessionTimeout / time.Millisecond))
 
+	if conn.dialer == nil {
+		conn.dialer = net.DialTimeout
+	}
 	go func() {
 		conn.loop()
 		conn.flushRequests(ErrClosing)
